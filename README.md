@@ -1,1 +1,1 @@
-# hotel_room_booking
+# hotel-room-booking
