@@ -3,8 +3,9 @@ package enum
 type BookingStatus string
 
 const (
-	ACTIVE    BookingStatus = "Active"
-	CANCELLED BookingStatus = "Cancelled"
+	ACTIVE     BookingStatus = "Active"
+	CANCELLED  BookingStatus = "Cancelled"
+	CHECKEDOUT BookingStatus = "CheckedOut"
 )
 
 type RoomStatus string

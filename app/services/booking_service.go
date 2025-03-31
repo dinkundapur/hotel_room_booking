@@ -114,6 +114,10 @@ func (r *BookingService) UpdateBooking(room_number int, booking_data dto.UpdateB
 				}
 
 				r.repo.UpdateBooking(booking)
+
+				if booking_data.Status != "" { //If booking is cancelled or checkedout make room as available
+					r.room_serv.UpdateRoomStatus(room_number, enum.AVAILABLE)
+				}
 				return nil
 			}
 		}
