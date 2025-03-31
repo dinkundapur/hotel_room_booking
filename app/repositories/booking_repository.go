@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"hotel-room-booking/app/models"
 	"sync"
 )
@@ -18,22 +17,40 @@ func NewBookingRepository() *BookingRepository {
 
 }
 
-func (r *BookingRepository) CreateBooking(room models.Booking) {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	r.Bookings[room.Id] = room
-
-	fmt.Println(r.Bookings)
+func (b *BookingRepository) CreateBooking(room models.Booking) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	b.Bookings[room.Id] = room
 }
 
-func (r *BookingRepository) GetBookings() []models.Booking {
-	r.mu.RLock()
-	defer r.mu.RUnlock()
-	bookings := make([]models.Booking, 0, len(r.Bookings))
-	for _, booking := range r.Bookings {
+func (b *BookingRepository) GetBookings() []models.Booking {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+	bookings := make([]models.Booking, 0, len(b.Bookings))
+	for _, booking := range b.Bookings {
 		bookings = append(bookings, booking)
 	}
 
-	fmt.Println(bookings)
 	return bookings
+}
+
+// It will give cancelled, active, completed bookings for given room number and email
+func (b *BookingRepository) GetAllBookingsByRoomNumber(room_number int, email string) []models.Booking {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+	bookings := make([]models.Booking, 0)
+	for _, booking := range b.Bookings {
+		if booking.RoomNumber == room_number && booking.Email == email {
+			bookings = append(bookings, booking)
+		}
+	}
+
+	return bookings
+}
+
+func (b *BookingRepository) UpdateBooking(booking models.Booking) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	b.Bookings[booking.Id] = booking
+
 }

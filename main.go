@@ -10,6 +10,8 @@ import (
 	"os/signal"
 	"syscall"
 
+	bootstrap "hotel-room-booking/app/bootstrap"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
@@ -21,6 +23,9 @@ func main() {
 
 	// Loading environment variables
 	settingEnvironment()
+
+	// Load App Settings
+	bootstrap.Boot(ctx)
 
 	app := gin.New()
 	api := app.Group("/api")
@@ -55,8 +60,17 @@ func terminate(ctx context.Context, cancel context.CancelFunc, server *http.Serv
 	<-sigCh
 	log.Print("Received interrupt signal, shutting down hotel-room-booking-service...")
 
-	//clearing connection and closing server
+	//clearing all clusters /connection and closing server
+	clearCluster(ctx, cancel)
 	closeServer(ctx, server)
+}
+
+func clearCluster(ctx context.Context, cancel context.CancelFunc) {
+	// cancelling the context
+	cancel()
+
+	// Destroying all intialization
+	bootstrap.Sleep(ctx)
 }
 
 func closeServer(ctx context.Context, server *http.Server) {

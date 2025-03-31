@@ -26,4 +26,7 @@ func (r route) RoomRoutes() {
 	roomRoutes := r.RouteGroup.Group("room") // v1/room
 	roomRoutes.POST("/book", hotelHandler.CreateBooking)
 	roomRoutes.GET("/bookings", hotelHandler.GetBookings)
+	roomRoutes.GET("/booking/:email", hotelHandler.GetBookingByEmail)
+	roomRoutes.POST("/update/booking/:room-number", hotelHandler.UpdateBooking)
+
 }
