@@ -38,7 +38,12 @@ Cloning into 'hotel_room_booking'...
 create .env file in project root, and copy .env_example file containt to .env
 
 
-### Step 3 - Run the Web Server
+### Step 3 - Run Tests
+```shell
+$ go test ./tests
+```
+
+### Step 4 - Run the Web Server
 ```shell
 $ go run main.go
 ```
